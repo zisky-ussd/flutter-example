@@ -60,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _accountNumber = new TextEditingController();
   TextEditingController _amount = new TextEditingController();
 
+  String authResult ='';
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -77,6 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         child: Column(
           children: <Widget>[
+            Text(authResult),
+
             TextFormField(
               controller: _billerCoder,
               decoration: InputDecoration(
@@ -132,6 +135,11 @@ class _MyHomePageState extends State<MyHomePage> {
     print("RESULT FINAL= $response");
     if (response != null) {
       ActionResponse responseObj = ActionResponse.fromJson(jsonDecode(response));
+      if(responseObj.status == "SUCCESS"){
+        setState(() {
+          authResult = 'Are you sure you want to pay ${responseObj.parsed_variables['amount']} to ${responseObj.parsed_variables['merchantDetails']}';
+        });
+      }
     }
     return response;
   }

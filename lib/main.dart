@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zisky/action-response.dart';
+import 'package:zisky/action_response.dart';
 import 'package:zisky/zisky.dart';
 
 void main() {
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({this.title}) ;
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -49,7 +49,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title!),
       ),
       body: Container(
         child: Column(
@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
       map["amount"] = _amount.text;
       map["accountNumber"] = _accountNumber.text;
       map["billerCode"] = _billerCoder.text;
-      await Zisky.startAction("6010635ce805bd608af775a9", getAuthResponse, extras: map);
+      await Zisky.startAction("9", getAuthResponse, extras: map);
     } on PlatformException catch (e) {
       print(e);
     }
@@ -137,7 +137,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ActionResponse responseObj = ActionResponse.fromJson(jsonDecode(response));
       if(responseObj.status == "SUCCESS"){
         setState(() {
-          authResult = 'Are you sure you want to pay ${responseObj.parsed_variables['amount']} to ${responseObj.parsed_variables['merchantDetails']}';
+          authResult = 'Are you sure you want to pay ${responseObj
+              .parsed_variables?['amount']} to ${responseObj
+              .parsed_variables?['merchantDetails']}';
         });
       }
     }
